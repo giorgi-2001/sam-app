@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: >
+  todo-app-project
+
+  Sample SAM Template for todo-app-project
+
+Globals:
+  Function:
+    Timeout: 3
+
+Resources:
+  TodoTableSAM:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: todo_id
+        Type: String
+      TableName: todo-table-sam
+
+  TodoAppAPI:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      Cors:
+        AllowMethods: "'GET,POST,PUT,DELETE,OPTIONS'"
+        AllowHeaders: "'Content-Type,Authorization'"
+        AllowOrigin: "'*'"
+
+  GetTodosFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: todo_app/get_todos
+      Handler: get_todos.lambda_handler
+      Runtime: python3.12
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TodoTableSAM
+      Environment:
+        Variables:
+          TODO_TABLE_NAME: !Ref TodoTableSAM 
+      Events:
+        AddTodo:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TodoAppAPI
+            Path: /
+            Method: GET
+
+  AddTodoFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: todo_app/add_todo
+      Handler: add_todo.lambda_handler
+      Runtime: python3.12
+      Architectures:
+        - x86_64
+      Policies:
+        - DynamoDBCrudPolicy:
+            TableName: !Ref TodoTableSAM
+      Environment:
+        Variables:
+          TODO_TABLE_NAME: !Ref TodoTableSAM 
+      Events:
+        GetTodos:
+          Type: Api
+          Properties:
+            RestApiId: !Ref TodoAppAPI
+            Path: /
+            Method: POST
+
+Outputs:
+  TodoAppEndpoint:
+    Description: "API Gateway endpoint URL for Prod stage for TodoApp backend"
+    Value: !Sub "https://${TodoAppAPI}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+
