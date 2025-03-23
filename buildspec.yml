@@ -14,12 +14,11 @@ phases:
       - sam build
 
 artifacts:
-  frontend-artifact:
-    files:
-      - frontend/dist/**/*
-    discard-paths: yes
+  files:
+    - frontend/dist/**/*
+  secondary-artifacts:
+    sam-artifact:
+      files:
+        - sam-backend/.aws-sam/build/**/*
+      name: sam-build
 
-  backend-artifact:
-    files:
-      - /sam-backend/.aws-sam/build/**/*
-    discard-paths: yes
