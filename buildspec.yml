@@ -12,9 +12,10 @@ phases:
       - npm run build
       - cd ../sam-backend
       - sam build
+      - zip -r frontend/dist.zip frontend/dist/
+      - zip -r sam-backend/aws-sam/sam.zip sam-backend/.aws-sam/build/
 
 artifacts:
   files:
-    - frontend/dist/**/*
-    - sam-backend/.aws-sam/build/**/*
-  discard-paths: yes
+    - frontend/dist.zip
+    - sam-backend/aws-sam/sam.zip
