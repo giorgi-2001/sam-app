@@ -4,7 +4,7 @@ phases:
   install:
     runtime-versions:
       python: 3.12
-      nodejs: 18  # Ensure Node.js is available for frontend
+      nodejs: 18
   build:
     commands:
       - cd frontend
@@ -16,11 +16,10 @@ phases:
 artifacts:
   frontend-artifact:
     files:
-      - frontend/dist/**
+      - frontend/dist/**/*
     discard-paths: yes
 
   backend-artifact:
     files:
-      - sam-backend/.aws-sam/build/**
+      - /sam-backend/.aws-sam/build/**/*
     discard-paths: yes
-
