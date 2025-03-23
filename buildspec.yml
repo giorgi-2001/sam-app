@@ -13,8 +13,8 @@ phases:
       - cd ../sam-backend
       - sam build
       - cd ..
-      - zip frontend/dist.zip frontend/dist/
-      - zip sam-backend/.aws-sam/sam.zip sam-backend/.aws-sam/build/
+      - zip -r frontend/dist.zip frontend/dist/*
+      - zip -r sam-backend/.aws-sam/sam.zip sam-backend/.aws-sam/build/*
 
 artifacts:
   files:
