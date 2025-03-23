@@ -16,9 +16,5 @@ phases:
 artifacts:
   files:
     - frontend/dist/**/*
-  secondary-artifacts:
-    sam-artifact:
-      files:
-        - sam-backend/.aws-sam/build/**/*
-      name: sam-build
-
+    - sam-backend/.aws-sam/build/**/*
+  discard-paths: yes
