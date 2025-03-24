@@ -10,13 +10,11 @@ phases:
       - cd frontend
       - npm install
       - npm run build
+      - aws s3 cp dist/* s3://$FRONTEND_BUCKET --recursive
       - cd ../sam-backend
       - sam build
-      - cd ..
-      - cp -r frontend/dist ./
-      - cp -r sam-backend/.aws-sam/build ./sam
+      - sam package --s3-bucket $ARTIFACT_BUCKET --output-template-file packaged.yml --no-resolve-s3
 
 artifacts:
   files:
-    - dist/**/*
-    - sam/**/*
+    - sam-backend/packaged.yml
