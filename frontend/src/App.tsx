@@ -3,7 +3,7 @@ import {
 } from "@tanstack/react-query"
 import Form from "./Form"
 
-export const apiUrl = "https://jdfbvophf5.execute-api.us-east-1.amazonaws.com/Prod/"
+export const apiUrl = "https://diiulevtt4.execute-api.us-east-1.amazonaws.com/Prod/"
 
 
 export interface ITodo {
